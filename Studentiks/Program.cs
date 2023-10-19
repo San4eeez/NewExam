@@ -1,75 +1,56 @@
-﻿using System;
-
-class Program
+﻿int[][,] jaggedArray3 = new int[3][,]
 {
-    static void Main()
+    new int[,]
     {
-        int numStudents = 5;    // Количество студентов
-        int numSubjects = 3;    // Количество предметов
-        int numGrades = 4;      // Количество оценок для каждого предмета
+        {4, 5, 3, 4},
+        {4, 5, 4, 3},
+        {5, 5, 4, 4},
+        {5, 5, 4, 5}
+    },
 
-        int[,,] gradeBook = new int[numStudents, numSubjects, numGrades];
+    new int[,]
+    {
+        {4, 2, 3, 4},
+        {2, 2, 3, 3},
+        {5, 5, 4, 4},
+        {3, 3, 3, 3}
+    },
 
-        // Задаем оценки
-        gradeBook = new int[,,]
+    new int[,]
+    {
+        {5, 5, 5, 4},
+        {4, 5, 5, 3},
+        {5, 5, 3, 4},
+        {4, 2, 4, 5}
+    }
+};
+
+while (true)
+{
+    Console.Write("Введите номер ученика: ");
+    int studentNumber = int.Parse(Console.ReadLine()) - 1;
+    rabota(studentNumber, jaggedArray3);
+
+
+}
+static void rabota(int studentNumber, int[][,] jaggedArray3)
+{
+
+
+    Console.Clear();
+    Console.WriteLine($"Оценки для Ученика {studentNumber + 1}:");
+    for (int subject = 0; subject < jaggedArray3.Length; subject++)
+    {
+        Console.Write($"Предмет {subject + 1} оценки: ");
+        int sum = 0;
+        for (int mark = 0; mark < jaggedArray3[subject].GetLength(1); mark++)
         {
-            { { 4, 5, 3, 4 }, { 3, 4, 5, 4 }, { 5, 4, 3, 3 } },
-            { { 4, 5, 4, 3 }, { 3, 3, 4, 4 }, { 5, 4, 5, 3 } },
-            { { 5, 5, 4, 4 }, { 3, 4, 4, 4 }, { 4, 5, 5, 5 } },
-            { { 3, 4, 3, 2 }, { 2, 3, 3, 4 }, { 3, 4, 2, 2 } },
-            { { 5, 5, 4, 5 }, { 4, 5, 5, 5 }, { 5, 5, 5, 5 } }
-        };
-
-        while (true)
-        {
-            Console.Write("Введите ID ученика (или 0 для выхода): ");
-            int studentId = int.Parse(Console.ReadLine());
-
-            if (studentId == 0)
-            {
-                break;
-            }
-
-            bool found = false;
-            for (int student = 0; student < numStudents; student++)
-            {
-                if (studentId == student + 1)
-                {
-                    Console.WriteLine($"Информация об ученике с ID {studentId}:");
-
-                    for (int subject = 0; subject < numSubjects; subject++)
-                    {
-                        Console.WriteLine($"Предмет {subject + 1}:");
-
-                        for (int grade = 0; grade < numGrades; grade++)
-                        {
-                            int currentGrade = gradeBook[student, subject, grade];
-                            Console.WriteLine($"Оценка {grade + 1}: {currentGrade}");
-                        }
-
-                        float average = CalculateAverage(gradeBook, student, subject, numGrades);
-                        Console.WriteLine($"Средняя оценка по предмету: {average:F2}");
-                    }
-
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found)
-            {
-                Console.WriteLine($"Ученик с ID {studentId} не найден.");
-            }
+            int markValue = jaggedArray3[subject][studentNumber, mark];
+            sum += markValue;
+            Console.Write($"{markValue} ");
         }
+        double average = (double)sum / jaggedArray3[subject].GetLength(1);
+        Console.WriteLine($"средняя оценка: {average:F2}");
     }
 
-    static float CalculateAverage(int[,,] gradeBook, int student, int subject, int numGrades)
-    {
-        float sum = 0;
-        for (int grade = 0; grade < numGrades; grade++)
-        {
-            sum += gradeBook[student, subject, grade];
-        }
-        return sum / numGrades;
-    }
 }
